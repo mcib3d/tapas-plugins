@@ -130,7 +130,6 @@ public class AnalyzeParticlesProcess implements TapasProcessing {
         String name2 = TapasBatchProcess.analyseFileName(name, info);
         String dir2 = TapasBatchProcess.analyseDirName(dir);
         try {
-            //resultsTable.show("Results");
             resultsTable.saveAs(dir2 + name2);
         } catch (IOException e) {
             e.printStackTrace();
