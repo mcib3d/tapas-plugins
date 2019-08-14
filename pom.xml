@@ -21,7 +21,7 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>mcib</groupId>
+            <groupId>mcib3d</groupId>
             <artifactId>tapas-core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
