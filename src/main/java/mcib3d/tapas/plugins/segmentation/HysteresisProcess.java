@@ -55,10 +55,20 @@ public class HysteresisProcess implements TapasProcessing {
         String users = parameters.get(USERS);
         // get value for min
         String minS = getParameter(THRESHOLD_MIN);
-        int thresholdMin = Integer.parseInt(TapasBatchProcess.getKey(minS, info, users));
+        String key = TapasBatchProcess.getKey(minS, info, users);
+        if (key == null) {
+            IJ.log("No key " + minS);
+            return null;
+        }
+        int thresholdMin = Integer.parseInt(key);
         // get value for max
         String maxS = getParameter(THRESHOLD_MAX);
-        int thresholdMax = Integer.parseInt(TapasBatchProcess.getKey(maxS, info, users));
+        key = TapasBatchProcess.getKey(maxS, info, users);
+        if (key == null) {
+            IJ.log("No key " + maxS);
+            return null;
+        }
+        int thresholdMax = Integer.parseInt(key);
         IJ.log("Hysteresis thresholding with values " + thresholdMin + " and " + thresholdMax);
         ImagePlus plus = hysteresis(input, thresholdMin, thresholdMax);
         if (input.getCalibration() != null) plus.setCalibration(input.getCalibration());

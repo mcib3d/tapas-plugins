@@ -43,7 +43,7 @@
         <dependency>
             <groupId>omero</groupId>
             <artifactId>blitz</artifactId>
-            <version>5.4.3-ice36-b77</version>
+            <version>5.4.10-ice36-b105</version>
         </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>

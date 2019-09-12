@@ -111,7 +111,7 @@ public class MergeChannelsProcess implements TapasProcessing {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, LIST};
+        return new String[]{DIR, LIST, RGB};
     }
 
     @Override

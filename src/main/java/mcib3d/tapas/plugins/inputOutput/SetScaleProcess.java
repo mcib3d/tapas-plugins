@@ -41,20 +41,22 @@ public class SetScaleProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         double sxy = Double.parseDouble(getParameter(SCALEXY).trim());
         double sz = Double.parseDouble(getParameter(SCALEZ).trim());
-        try {
-            OmeroConnect connect = new OmeroConnect();
-            connect.connect();
-            ImageData imageData = connect.findOneImage(info);
-            if (imageData != null) {
-                if (connect.setResolutionImageUM(imageData, sxy, sz)) {
-                    IJ.log("Set resolution to " + sxy + " " + sz);
-                } else {
-                    IJ.log("Pb to set resolution");
+        if (info.isOmero()) {
+            try {
+                OmeroConnect connect = new OmeroConnect();
+                connect.connect();
+                ImageData imageData = connect.findOneImage(info);
+                if (imageData != null) {
+                    if (connect.setResolutionImageUM(imageData, sxy, sz)) {
+                        IJ.log("Set resolution to " + sxy + " " + sz);
+                    } else {
+                        IJ.log("Pb to set resolution");
+                    }
                 }
+                connect.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            connect.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         // change resolution for inout
         Calibration calibration = input.getCalibration();

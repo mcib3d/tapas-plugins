@@ -2,6 +2,7 @@ package mcib3d.tapas.plugins.processing;
 
 import ij.ImagePlus;
 import ij.plugin.ContrastEnhancer;
+import mcib3d.image3d.ImageByte;
 import mcib3d.image3d.ImageHandler;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
@@ -37,10 +38,14 @@ public class NormaliseValuesProcess implements TapasProcessing {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        // mean annd sd
+        // mean and sd
         float mean = Float.parseFloat(TapasBatchProcess.getKey(getParameter(MEAN), info, "-"));
         float sd = Float.parseFloat(TapasBatchProcess.getKey(getParameter(SD), info, "-"));
         ImageHandler img = ImageHandler.wrap(input);
+        // convert to 16-bits if 8-bits and mean > 255
+        if ((input.getBitDepth() < 16) && (mean > 255)) {
+            img = ((ImageByte) img).convertToShort(false);
+        }
         ImageHandler normalised = img.normaliseValue(mean, sd);
 
         return normalised.getImagePlus();

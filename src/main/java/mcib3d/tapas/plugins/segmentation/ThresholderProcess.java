@@ -41,7 +41,12 @@ public class ThresholderProcess implements TapasProcessing {
         int threshold = 0;
         // if not value, look for key in core
         String thresholdS = parameters.get(THRESHOLD_VALUE);
-        threshold = Integer.parseInt(TapasBatchProcess.getKey(thresholdS, info, getParameter(USERS)));
+        String key = TapasBatchProcess.getKey(thresholdS, info, getParameter(USERS));
+        if (key == null) {
+            IJ.log("No key " + thresholdS);
+            return null;
+        }
+        threshold = Integer.parseInt(key);
         IJ.log("Thresholding with value " + threshold);
         ImagePlus res = ImageHandler.wrap(input).thresholdAboveExclusive(threshold).getImagePlus();
         res.setCalibration(input.getCalibration());

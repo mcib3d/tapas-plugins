@@ -26,6 +26,7 @@ public class EvfLayerProcess implements TapasProcessing {
 
     public EvfLayerProcess() {
         parameters = new HashMap<>();
+        setParameter(NB_LAYERS,"100");
         setParameter(RANDOM, "no");
     }
 

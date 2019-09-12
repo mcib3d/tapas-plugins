@@ -127,7 +127,7 @@ public class SequenceProcess implements TapasProcessing {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, NAME};
+        return new String[]{DIR, NAME, DIMENSION};
     }
 
     public String getParameter(String id) {

@@ -45,10 +45,20 @@ public class CropZProcess implements TapasProcessing {
         String users = parameters.get(USERS);
         // get value for min
         String minS = getParameter(ZMIN);
-        int zmin = Integer.parseInt(TapasBatchProcess.getKey(minS, info, users));
+        String key = TapasBatchProcess.getKey(minS, info, getParameter(USERS));
+        if (key == null) {
+            IJ.log("No key " + minS);
+            return null;
+        }
+        int zmin = Integer.parseInt(key);
         // get value for max
         String maxS = getParameter(ZMAX);
-        int zmax = Integer.parseInt(TapasBatchProcess.getKey(maxS, info, users));
+        key = TapasBatchProcess.getKey(maxS, info, getParameter(USERS));
+        if (key == null) {
+            IJ.log("No key " + maxS);
+            return null;
+        }
+        int zmax = Integer.parseInt(key);
         IJ.log("Cropping in Z with values " + zmin + " and " + zmax);
         // get the stack
         ImagePlus plus = input.duplicate();
