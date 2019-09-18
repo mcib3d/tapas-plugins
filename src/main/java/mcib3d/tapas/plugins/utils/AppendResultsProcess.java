@@ -107,7 +107,7 @@ public class AppendResultsProcess implements TapasProcessing {
                 for (int r = 0; r < nResults2; r++) labels2[r] = resultsTable.getLabel(r);
             }
         }
-        for (int r = 0; r < nResults2; r++) if (labels2[r].equals(".")) labels2[r] = info.getImage();
+        for (int r = 0; r < nResults2; r++) if (labels2[r].equals(".")) labels2[r] = info.getName();
         // create new results table
         resultsTable.reset();
         for (int r = 0; r < nResults1; r++) {
@@ -127,7 +127,7 @@ public class AppendResultsProcess implements TapasProcessing {
             resultsTable.incrementCounter();
             // set label first
             if (labels2 != null) resultsTable.setLabel(labels2[r - nResults1], r);
-            else resultsTable.setLabel(info.getImage(), r);
+            else resultsTable.setLabel(info.getName(), r);
             for (String header : headers2.keySet()) {
                 float val = headers2.get(header)[r - nResults1];
                 if (Float.isNaN(val))

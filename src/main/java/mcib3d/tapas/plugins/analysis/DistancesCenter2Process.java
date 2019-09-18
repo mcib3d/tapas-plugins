@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class DistancesCenter2Process implements TapasProcessing {
-    private static final String DIRLABELS = "dirLabels";
-    private static final String FILELABELS = "fileLabels";
+    private static final String DIRLABELS = "dirLabel";
+    private static final String FILELABELS = "fileLabel";
     private static final String DIR = "dir";
     private static final String FILE = "file";
 

@@ -58,7 +58,7 @@ public class ScaleProcess implements TapasProcessing {
             try {
                 String project = info.getProject();
                 String dataset = info.getDataset();
-                String name = info.getImage();
+                String name = info.getName();
                 OmeroConnect connect = new OmeroConnect();
                 connect.connect();
                 ImageData imageData = connect.findOneImage(project, dataset, name, true);

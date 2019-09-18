@@ -75,7 +75,7 @@ public class SetScaleProcess implements TapasProcessing {
 
     @Override
     public String getName() {
-        return "Set the image scale, update scale if OMERO";
+        return "Set the image scale, update scale if OMERO, in um";
     }
 
     @Override

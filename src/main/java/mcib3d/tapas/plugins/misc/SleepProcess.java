@@ -30,8 +30,8 @@ public class SleepProcess implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         double sec = Double.parseDouble(getParameter(TIME));
-
         try {
+            IJ.log("Sleeping " + sec + " seconds");
             Thread.sleep((long) (sec * 1000));
         } catch (InterruptedException e) {
             IJ.log("Pb sleep " + e);

@@ -72,7 +72,7 @@ public class DeleteProcess implements TapasProcessing {
         String file = new String(s);
         if (file.contains("?project?")) file = file.replace("?project?", info.getProject());
         if (file.contains("?dataset?")) file = file.replace("?dataset?", info.getDataset());
-        if (file.contains("?name?")) file = file.replace("?name?", info.getImage());
+        if (file.contains("?name?")) file = file.replace("?name?", info.getName());
 
         return file;
     }
