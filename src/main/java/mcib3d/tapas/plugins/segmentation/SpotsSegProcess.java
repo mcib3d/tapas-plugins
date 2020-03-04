@@ -58,9 +58,10 @@ public class SpotsSegProcess implements TapasProcessing {
         seg.setVolumeMin(Integer.parseInt(parameters.get(MIN_VOLUME)));
         seg.setVolumeMax(Integer.parseInt(parameters.get(MAX_VOLUME)));
         seg.setMethodLocal(Segment3DSpots.LOCAL_GAUSS);
-        seg.setMethodSeg(Segment3DSpots.SEG_BLOCK);
+        seg.setMethodSeg(Segment3DSpots.SEG_CLASSICAL);
+        seg.setWatershed(true);
         seg.setGaussPc(1.2); // gaussian cut-off, coeff*sigma
-        seg.setGaussMaxr(20); // radius to compute gaussian
+        seg.setGaussMaxr(10); // radius to compute gaussian
         // segmentation
         seg.segmentAll();
         ImageHandler res = seg.getLabelImage();

@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class MacroProcess implements TapasProcessing {
     public static final String DIR = "dir";
     public static final String FILE = "file";
+    public static final String CLOSEALL = "closeImages";
     HashMap<String, String> parameters;
     ImageInfo info;
 
@@ -19,6 +20,7 @@ public class MacroProcess implements TapasProcessing {
     public MacroProcess() {
         parameters = new HashMap<>();
         info = new ImageInfo();
+        setParameter(CLOSEALL, "yes");
     }
 
     @Override
@@ -28,6 +30,9 @@ public class MacroProcess implements TapasProcessing {
                 parameters.put(id, value);
                 return true;
             case FILE:
+                parameters.put(id, value);
+                return true;
+            case CLOSEALL:
                 parameters.put(id, value);
                 return true;
         }
@@ -41,6 +46,8 @@ public class MacroProcess implements TapasProcessing {
         String name2 = TapasBatchProcess.analyseFileName(name, info);
         String dir2 = TapasBatchProcess.analyseDirName(dir);
         IJ.log("Running macro" + dir2 + name2);
+        // set the right title to the image so macro can use it
+        input.setTitle(info.getName());
         WindowManager.setTempCurrentImage(input);
         input.show();
         IJ.runMacroFile(dir2 + name2);
@@ -49,6 +56,14 @@ public class MacroProcess implements TapasProcessing {
         ImagePlus dupMacro = macroPlus.duplicate();
         macroPlus.changes = false;
         macroPlus.close();
+        // close all images
+        if (getParameter(CLOSEALL).equalsIgnoreCase("yes")) {
+            while (WindowManager.getImageCount() > 0) {
+                ImagePlus tmp = WindowManager.getCurrentImage();
+                tmp.changes = false;
+                tmp.close();
+            }
+        }
 
         return dupMacro;
     }
@@ -60,7 +75,7 @@ public class MacroProcess implements TapasProcessing {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, FILE};
+        return new String[]{DIR, FILE, CLOSEALL};
     }
 
     public String getParameter(String id) {

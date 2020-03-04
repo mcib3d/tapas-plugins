@@ -1,6 +1,8 @@
 package mcib3d.tapas.plugins.processing;
 
+import ij.IJ;
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.plugin.filter.BackgroundSubtracter;
 import ij.process.ImageProcessor;
 import mcib3d.tapas.TapasProcessing;
@@ -35,7 +37,6 @@ public class RollingBallProcess implements TapasProcessing {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        ImageProcessor processor = input.getProcessor();
         double rad = Double.parseDouble(parameters.get(RADIUS));
         boolean createBackground = false;
         boolean ligthBackground = false;
@@ -44,9 +45,17 @@ public class RollingBallProcess implements TapasProcessing {
         boolean doPresmooth = true;
         boolean correctCorners = true;
         BackgroundSubtracter backgroundSubtracter = new BackgroundSubtracter();
-        backgroundSubtracter.rollingBallBackground(processor, rad, createBackground, ligthBackground, useParaboloid, doPresmooth, correctCorners);
+        if (input.getNChannels() > 1) {
+            IJ.log("Cannot proces multi-channels images");
+            return null;
+        }
+        // TODO for all slices
         ImagePlus copy = input.duplicate();
-        copy.setProcessor(processor);
+        ImageStack stack = copy.getStack();
+        for (int s = 1; s <= input.getStackSize(); s++) {
+            ImageProcessor processor = stack.getProcessor(s);
+            backgroundSubtracter.rollingBallBackground(processor, rad, createBackground, ligthBackground, useParaboloid, doPresmooth, correctCorners);
+        }
 
         return copy;
     }

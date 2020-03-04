@@ -13,18 +13,23 @@ import java.util.HashMap;
 
 public class EdtEvfProcess implements TapasProcessing {
     private static final String EVF = "evf";
+    private static final String INVERSE = "inverse";
 
     HashMap<String, String> parameters;
 
     public EdtEvfProcess() {
         parameters = new HashMap<>(1);
         parameters.put(EVF, "no");
+        parameters.put(INVERSE, "no");
     }
 
     @Override
     public boolean setParameter(String id, String value) {
         switch (id) {
             case EVF:
+                parameters.put(id, value);
+                return true;
+            case INVERSE:
                 parameters.put(id, value);
                 return true;
         }
@@ -34,7 +39,8 @@ public class EdtEvfProcess implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         IJ.log("Processing EDT");
-        ImageFloat edt = EDT.run(ImageHandler.wrap(input), 0, false, 0);
+        boolean inverse = getParameter(INVERSE).equalsIgnoreCase("yes");
+        ImageFloat edt = EDT.run(ImageHandler.wrap(input), 0, inverse, 0);
         IJ.log("EDT processed");
         if (getParameter(EVF).equalsIgnoreCase("no")) {
             return edt.getImagePlus();
@@ -53,7 +59,7 @@ public class EdtEvfProcess implements TapasProcessing {
 
     @Override
     public String[] getParameters() {
-        return new String[]{EVF};
+        return new String[]{EVF, INVERSE};
     }
 
     public String getParameter(String id) {

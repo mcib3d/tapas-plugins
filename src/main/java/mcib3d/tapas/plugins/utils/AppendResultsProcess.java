@@ -3,6 +3,7 @@ package mcib3d.tapas.plugins.utils;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.macro.Variable;
 import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.TapasBatchProcess;
@@ -64,75 +65,43 @@ public class AppendResultsProcess implements TapasProcessing {
         else resultsTable.reset();
 
         // reading file1
-        HashMap<String, float[]> headers1 = new HashMap<>();
+        HashMap<String, Variable[]> headers1 = new HashMap<>();
         String[] headers;
-        String[] labels1 = null;
         int nResults1;
         if (!file1.exists()) {
-            resultsTable = null;
             nResults1 = 0;
         } else {
             resultsTable = ResultsTable.open2(dir1 + name1);
-            headers = resultsTable.getHeadings();
-            //for (String h : headers) IJ.log("Found header " + h);
             nResults1 = resultsTable.size();
-            labels1 = new String[nResults1];
-            for (int r = 0; r < nResults1; r++) labels1[r] = ".";
-            for (String h : headers) {
-                int c = resultsTable.getColumnIndex(h);
-                if (c != -1)
-                    headers1.put(h, resultsTable.getColumn(c));
-                else if (h.equalsIgnoreCase("label")) {
-                    for (int r = 0; r < nResults1; r++) labels1[r] = resultsTable.getLabel(r);
-                }
-            }
+            headers1 = extractValuesFromTable(resultsTable);
             resultsTable.reset();
         }
 
-
         // reading file2
-        HashMap<String, float[]> headers2 = new HashMap<>();
-        String[] labels2 = null;
+        HashMap<String, Variable[]> headers2 = new HashMap<>();
         // file2
         resultsTable = ResultsTable.open2(dir2 + name2);
-        headers = resultsTable.getHeadings();
         int nResults2 = resultsTable.size();
-        labels2 = new String[nResults2];
-        for (int r = 0; r < nResults2; r++) labels2[r] = ".";
-        for (String h : headers) {
-            int c = resultsTable.getColumnIndex(h);
-            if (c != -1)
-                headers2.put(h, resultsTable.getColumn(c));
-            else if (h.equalsIgnoreCase("label")) {
-                for (int r = 0; r < nResults2; r++) labels2[r] = resultsTable.getLabel(r);
-            }
-        }
-        for (int r = 0; r < nResults2; r++) if (labels2[r].equals(".")) labels2[r] = info.getName();
+        headers2 = extractValuesFromTable(resultsTable);
+
         // create new results table
         resultsTable.reset();
         for (int r = 0; r < nResults1; r++) {
             resultsTable.incrementCounter();
-            // set label first
-            if (labels1 != null) resultsTable.setLabel(labels1[r], r);
             for (String header : headers1.keySet()) {
                 if (headers1 == null) IJ.log("headers1 null " + header);
                 if (headers1.get(header) == null) IJ.log("headers1.get null " + header);
-                float val = headers1.get(header)[r];
-                if (Float.isNaN(val))
-                    resultsTable.setValue(header, r, Double.NaN);
-                else resultsTable.setValue(header, r, val);
+                if (headers1.get(header)[r].getString() != null)
+                    resultsTable.setValue(header, r, headers1.get(header)[r].getString());
+                else resultsTable.setValue(header, r, headers1.get(header)[r].getValue());
             }
         }
         for (int r = nResults1; r < nResults1 + nResults2; r++) {
             resultsTable.incrementCounter();
-            // set label first
-            if (labels2 != null) resultsTable.setLabel(labels2[r - nResults1], r);
-            else resultsTable.setLabel(info.getName(), r);
             for (String header : headers2.keySet()) {
-                float val = headers2.get(header)[r - nResults1];
-                if (Float.isNaN(val))
-                    resultsTable.setValue(header, r, Double.NaN);
-                else resultsTable.setValue(header, r, val);
+                if (headers2.get(header)[r - nResults1].getString() != null)
+                    resultsTable.setValue(header, r, headers2.get(header)[r - nResults1].getString());
+                else resultsTable.setValue(header, r, headers2.get(header)[r - nResults1].getValue());
             }
         }
         // save results table
@@ -144,6 +113,35 @@ public class AppendResultsProcess implements TapasProcessing {
         }
 
         return input.duplicate();
+    }
+
+    private HashMap<String, Variable[]> extractValuesFromTable(ResultsTable resultsTable) {
+        HashMap<String, Variable[]> results = new HashMap<>();
+        String[] headers = resultsTable.getHeadings();
+        int nResults2 = resultsTable.size();
+        for (String h : headers) {
+            int c = resultsTable.getColumnIndex(h);
+            if (c != -1)
+                results.put(h, resultsTable.getColumnAsVariables(h));
+        }
+        // check if column "image" exists
+        if (!resultsTable.columnExists("Image")) {
+            Variable[] images = new Variable[resultsTable.size()];
+            for (int r = 0; r < resultsTable.size(); r++) {
+                images[r] = new Variable(info.getName());
+            }
+            results.put("Image", images);
+        }
+        // check special column label
+        if (resultsTable.getLabel(0) != null) {
+            Variable[] labels = new Variable[resultsTable.size()];
+            for (int r = 0; r < resultsTable.size(); r++) {
+                labels[r] = new Variable(resultsTable.getLabel(r));
+            }
+            results.put("Label", labels);
+        }
+
+        return results;
     }
 
     @Override

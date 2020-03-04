@@ -100,7 +100,7 @@ public class readAttachmentProcess implements TapasProcessing {
                 return input.duplicate();
             }
             IJ.log("Reading attachment " + attach);
-            File file = omero.readAttachment(annotation, dir, fileName);
+            File file = omero.readAttachment(new ImageInfo(project, dataset, name), attach, null);
             omero.disconnect();
         } catch (Exception e) {
             IJ.log("Pb reading attachment");
