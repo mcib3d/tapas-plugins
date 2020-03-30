@@ -47,7 +47,7 @@ public class MacroProcess implements TapasProcessing {
         String dir2 = TapasBatchProcess.analyseDirName(dir);
         IJ.log("Running macro" + dir2 + name2);
         // set the right title to the image so macro can use it
-        input.setTitle(info.getName());
+        input.setTitle(info.getImage());
         WindowManager.setTempCurrentImage(input);
         input.show();
         IJ.runMacroFile(dir2 + name2);

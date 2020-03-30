@@ -128,7 +128,7 @@ public class AppendResultsProcess implements TapasProcessing {
         if (!resultsTable.columnExists("Image")) {
             Variable[] images = new Variable[resultsTable.size()];
             for (int r = 0; r < resultsTable.size(); r++) {
-                images[r] = new Variable(info.getName());
+                images[r] = new Variable(info.getImage());
             }
             results.put("Image", images);
         }

@@ -26,7 +26,7 @@
             <version>0.5</version>
             <scope>system</scope>
             <!-- change the path -->
-            <systemPath>/home/boudier/App/ImageJ/plugins/3D/tapas_core.jar</systemPath>
+            <systemPath>/home/thomas/App/ImageJ/plugins/3D/tapas_core.jar</systemPath>
             <!-- change the path -->
         </dependency>
         <dependency>
@@ -50,6 +50,13 @@
             <artifactId>hsqldb</artifactId>
             <version>1.8.0.10</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.haesleinhuepf</groupId>
+            <artifactId>clij_</artifactId>
+            <version>1.5.7</version>
+        </dependency>
+
     </dependencies>
     
      <repositories>
@@ -65,6 +72,12 @@
             <id>jboss</id>
             <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
         </repository>
+
+         <repository>
+             <id>clij</id>
+             <url>http://dl.bintray.com/haesleinhuepf/clij</url>
+         </repository>
+
 </repositories>
 
 </project>
