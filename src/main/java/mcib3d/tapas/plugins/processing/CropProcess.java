@@ -7,7 +7,7 @@ import ij.plugin.Resizer;
 import ij.plugin.RoiReader;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,8 +41,8 @@ public class CropProcess implements TapasProcessing {
         // load ROI
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         IJ.log("opening roi " + dir2 + name2);
         WindowManager.setTempCurrentImage(input);
         try {

@@ -8,7 +8,7 @@ import ij.measure.ResultsTable;
 import ij.plugin.filter.ParticleAnalyzer;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import ome.tools.hibernate.SqlArray;
 
 import java.io.IOException;
@@ -127,8 +127,8 @@ public class AnalyzeParticlesProcess implements TapasProcessing {
         // save results table
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         try {
             resultsTable.saveAs(dir2 + name2);
         } catch (IOException e) {

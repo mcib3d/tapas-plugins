@@ -2,14 +2,11 @@ package mcib3d.tapas.plugins.processing;
 
 import ij.IJ;
 import ij.ImagePlus;
-import mcib3d.image3d.processing.FastFilters3D;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-
 import net.haesleinhuepf.clij.CLIJ;
 import net.haesleinhuepf.clij.clearcl.ClearCLBuffer;
 
-import java.awt.*;
 import java.util.HashMap;
 
 public class CLIJProcess implements TapasProcessing {
@@ -19,6 +16,14 @@ public class CLIJProcess implements TapasProcessing {
     HashMap<String, String> parameters;
 
     public CLIJProcess() {
+        // check install
+        ClassLoader loader = IJ.getClassLoader();
+        try {
+            loader.loadClass("net.haesleinhuepf.clij.CLIJ");
+        } catch (Exception e) {
+            IJ.log("CLIJ not installed, please install from update site");
+            return;
+        }
         parameters = new HashMap<>();
         setParameter(RADIUSXY, "2");
         setParameter(RADIUSZ, "0");

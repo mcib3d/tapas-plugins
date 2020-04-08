@@ -5,7 +5,7 @@ import ij.ImagePlus;
 import ij.io.FileSaver;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.util.HashMap;
 
@@ -43,8 +43,8 @@ public class SaveProcess implements TapasProcessing {
         String name = getParameter(FILE);
         String dir = getParameter(DIR);
         // check names
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         // save
         FileSaver saver = new FileSaver(input);
         boolean ok = false;

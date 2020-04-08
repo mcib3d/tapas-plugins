@@ -7,6 +7,7 @@ import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.ImageData;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -58,12 +59,12 @@ public class LoadScaleProcess implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         // get the calibration file
-        String dir = TapasBatchProcess.analyseDirName(getParameter(DIR));
-        String file = TapasBatchProcess.analyseFileName(getParameter(FILE), info);
+        String dir = TapasBatchUtils.analyseDirName(getParameter(DIR));
+        String file = TapasBatchUtils.analyseFileName(getParameter(FILE), info);
         // get the image data
-        String project2 = TapasBatchProcess.analyseFileName(getParameter(PROJECT), info);
-        String dataset2 = TapasBatchProcess.analyseFileName(getParameter(DATASET), info);
-        String name2 = TapasBatchProcess.analyseFileName(getParameter(NAME), info);
+        String project2 = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
+        String dataset2 = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
+        String name2 = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
         // get calibration
         Calibration calibration = input.getCalibration();
         double sxy = 1;

@@ -4,7 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.*;
 import java.util.HashMap;
@@ -44,10 +44,10 @@ public class ExecutableProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         // analyse DIR and ARG
         String dir = parameters.get(DIR);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         String exe = parameters.get(FILE);
         String arg = parameters.get(ARG);
-        String arg2 = TapasBatchProcess.analyseStringKeywords(arg, info);
+        String arg2 = TapasBatchUtils.analyseStringKeywords(arg, info);
         try {
             // create script file
             String tmpExe = "";

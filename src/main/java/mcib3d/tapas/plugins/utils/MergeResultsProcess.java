@@ -5,7 +5,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.tapas.core.ImageInfo;
 
 import java.io.*;
@@ -51,11 +51,11 @@ public class MergeResultsProcess implements TapasProcessing {
         int nResults = 0;
         HashMap<String, float[]> headers = new HashMap<>();
         ArrayList<String> headerString = new ArrayList<>();
-        String dir2 = TapasBatchProcess.analyseDirName(parameters.get(DIR));
+        String dir2 = TapasBatchUtils.analyseDirName(parameters.get(DIR));
         String[] files = parameters.get(LIST).split(",");
         for (int f = 0; f < files.length; f++) {
             String name = files[f];
-            String name2 = TapasBatchProcess.analyseFileName(name.trim(), info);
+            String name2 = TapasBatchUtils.analyseFileName(name.trim(), info);
             File file = new File(dir2 + name2);
             if (file.exists()) {
                 IJ.log("Reading results " + dir2 + name2);
@@ -80,8 +80,8 @@ public class MergeResultsProcess implements TapasProcessing {
         // save results
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name3 = TapasBatchProcess.analyseFileName(name, info);
-        String dir3 = TapasBatchProcess.analyseDirName(dir);
+        String name3 = TapasBatchUtils.analyseFileName(name, info);
+        String dir3 = TapasBatchUtils.analyseDirName(dir);
         writeData(dir3 + name3, headers, headerString, ",");
 
         return input.duplicate();

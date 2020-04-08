@@ -7,7 +7,7 @@ import mcib3d.geom.Objects3DPopulation;
 import mcib3d.image3d.ImageHandler;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -66,8 +66,8 @@ public class DistancesBorder2Process implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         // read label image
-        String dir = TapasBatchProcess.analyseDirName(getParameter(DIRLABELS));
-        String file = TapasBatchProcess.analyseFileName(getParameter(FILELABELS), info);
+        String dir = TapasBatchUtils.analyseDirName(getParameter(DIRLABELS));
+        String file = TapasBatchUtils.analyseFileName(getParameter(FILELABELS), info);
         ImageHandler image = ImageHandler.wrap(IJ.openImage(dir + file));
         Objects3DPopulation population2 = new Objects3DPopulation(image);
 
@@ -75,7 +75,7 @@ public class DistancesBorder2Process implements TapasProcessing {
         ImageHandler imageHandler = ImageHandler.wrap(input);
         Objects3DPopulation population1 = new Objects3DPopulation(imageHandler);
         // get parameter
-        String fileName = TapasBatchProcess.analyseDirName(getParameter(DIR)) + TapasBatchProcess.analyseFileName(getParameter(FILE), info);
+        String fileName = TapasBatchUtils.analyseDirName(getParameter(DIR)) + TapasBatchUtils.analyseFileName(getParameter(FILE), info);
         // create file a
         String delimiter = ",";
         BufferedWriter buf;

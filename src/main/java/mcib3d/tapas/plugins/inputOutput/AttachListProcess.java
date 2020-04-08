@@ -6,6 +6,7 @@ import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.OmeroConnect;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -53,11 +54,11 @@ public class AttachListProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         // dir
         String dir = getParameter(DIR);
-        String dirF = TapasBatchProcess.analyseDirName(dir);
+        String dirF = TapasBatchUtils.analyseDirName(dir);
         // core
-        String nameO = TapasBatchProcess.analyseFileName(getParameter(NAME), info);
-        String project = TapasBatchProcess.analyseFileName(getParameter(PROJECT), info);
-        String dataset = TapasBatchProcess.analyseFileName(getParameter(DATASET), info);
+        String nameO = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
+        String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
         try {
             // get list of files
             String[] files = parameters.get(LIST).split(",");
@@ -65,7 +66,7 @@ public class AttachListProcess implements TapasProcessing {
             connect.setLog(false);
             connect.connect();
             for (String attachFile : files) {
-                String nameF = TapasBatchProcess.analyseFileName(attachFile, info);
+                String nameF = TapasBatchUtils.analyseFileName(attachFile, info);
                 IJ.log("Attaching " + dirF + nameF+" to OMERO");
                 File file = new File(dirF + nameF);
                 if (!file.exists()) IJ.log(file.getAbsolutePath() + " does not exists");

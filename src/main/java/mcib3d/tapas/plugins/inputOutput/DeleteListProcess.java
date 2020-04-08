@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -36,13 +37,13 @@ public class DeleteListProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         // dir
         String dir = getParameter(DIR);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         // get list of files
         String[] files = parameters.get(LIST).split(",");
         // delete
         for (int f = 0; f < files.length; f++) {
             String name = files[f];
-            String name2 = TapasBatchProcess.analyseFileName(name.trim(), info);
+            String name2 = TapasBatchUtils.analyseFileName(name.trim(), info);
             File file = new File(dir2 + name2);
             if (file.exists()) {
                 IJ.log("Deleting " + file.getPath());

@@ -6,6 +6,7 @@ import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.FileAnnotationData;
 import omero.gateway.model.ImageData;
 
@@ -64,12 +65,12 @@ public class readAttachmentProcess implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         // get parameters
-        String project = TapasBatchProcess.analyseFileName(getParameter(PROJECT), info);
-        String dataset = TapasBatchProcess.analyseFileName(getParameter(DATASET), info);
-        String name = TapasBatchProcess.analyseFileName(getParameter(NAME), info);
-        String attach = TapasBatchProcess.analyseFileName(getParameter(ATTACH), info);
-        String fileName = TapasBatchProcess.analyseFileName(getParameter(FILE), info);
-        String dir = TapasBatchProcess.analyseDirName(getParameter(DIR));
+        String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
+        String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
+        String name = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String attach = TapasBatchUtils.analyseFileName(getParameter(ATTACH), info);
+        String fileName = TapasBatchUtils.analyseFileName(getParameter(FILE), info);
+        String dir = TapasBatchUtils.analyseDirName(getParameter(DIR));
         // users
         ArrayList<String> addUsers = null;
         String users = getParameter(USERS);

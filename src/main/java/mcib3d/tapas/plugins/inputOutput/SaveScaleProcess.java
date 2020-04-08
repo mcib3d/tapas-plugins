@@ -6,6 +6,7 @@ import ij.measure.Calibration;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.*;
 import java.util.HashMap;
@@ -38,8 +39,8 @@ public class SaveScaleProcess implements TapasProcessing {
     @Override
     public ImagePlus execute(ImagePlus input) {
         // get the file
-        String dir = TapasBatchProcess.analyseDirName(getParameter(DIR));
-        String file = TapasBatchProcess.analyseFileName(getParameter(FILE), info);
+        String dir = TapasBatchUtils.analyseDirName(getParameter(DIR));
+        String file = TapasBatchUtils.analyseFileName(getParameter(FILE), info);
         try {
             // get calibration
             Calibration calibration = input.getCalibration();

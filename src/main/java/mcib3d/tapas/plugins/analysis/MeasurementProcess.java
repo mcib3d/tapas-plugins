@@ -5,7 +5,7 @@ import ij.ImagePlus;
 import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.geom.Object3D;
 import mcib3d.geom.Objects3DPopulation;
 import mcib3d.image3d.ImageInt;
@@ -48,8 +48,8 @@ public class MeasurementProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         // measurements
         Objects3DPopulation population = new Objects3DPopulation(ImageInt.wrap(input));
         ArrayList<String> list = new ArrayList<>();

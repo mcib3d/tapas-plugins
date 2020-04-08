@@ -6,6 +6,7 @@ import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.geom.Object3D;
 import mcib3d.geom.Objects3DPopulation;
 import mcib3d.image3d.ImageHandler;
@@ -58,8 +59,8 @@ public class QuantificationProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         //String name = parameters.get(FILE_RAW);
         //String dir = parameters.get(DIR_RAW);
-        //String name2 = TapasBatchProcess.analyseFileName(name, info);
-        //String dir2 = TapasBatchProcess.analyseDirName(dir);
+        //String name2 = TapasBatchUtils.analyseFileName(name, info);
+        //String dir2 = TapasBatchUtils.analyseDirName(dir);
         // open raw image to perform quantification
         if (debug) IJ.log("Opening raw image");
         //ImagePlus plus = IJ.openImage(dir2 + name2);
@@ -85,8 +86,8 @@ public class QuantificationProcess implements TapasProcessing {
         // save results
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         if (debug) IJ.log("saving results to " + dir2 + " " + name2);
         try {
             resultsTable.saveAs(dir2 + name2);

@@ -4,7 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.tapas.core.ImageInfo;
 
 import java.util.HashMap;
@@ -43,8 +43,8 @@ public class MacroProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         String name = getParameter(FILE);
         String dir = getParameter(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         IJ.log("Running macro" + dir2 + name2);
         // set the right title to the image so macro can use it
         input.setTitle(info.getImage());

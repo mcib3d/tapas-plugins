@@ -5,7 +5,7 @@ import ij.ImageStack;
 import ij.gui.NewImage;
 import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.geom.Object3D;
 import mcib3d.geom.Objects3DPopulation;
@@ -56,8 +56,8 @@ public class BinaryClassificationProcess implements TapasProcessing {
         // reading results
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         resultsTable = ResultsTable.open2(dir2 + name2);
         // population
         ImageInt img = ImageInt.wrap(input);

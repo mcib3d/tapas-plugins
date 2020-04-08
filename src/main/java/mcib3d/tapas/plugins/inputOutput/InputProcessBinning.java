@@ -4,10 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import mcib3d.image3d.ImageHandler;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.BioformatsReader;
-import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.OmeroConnect;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.*;
 import omero.gateway.model.ImageData;
 
 import java.util.HashMap;
@@ -70,14 +67,14 @@ public class InputProcessBinning implements TapasProcessing {
         String name = getParameter(NAME);
         String project = getParameter(PROJECT);
         String dataset = getParameter(DATASET);
-        String project2 = TapasBatchProcess.analyseFileName(project, info);
-        String dataset2 = TapasBatchProcess.analyseFileName(dataset, info);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
+        String project2 = TapasBatchUtils.analyseFileName(project, info);
+        String dataset2 = TapasBatchUtils.analyseFileName(dataset, info);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
         ImageHandler output = null;
 
         // core input
-        int c = TapasBatchProcess.analyseChannelFrameName(parameters.get(CHANNEL), info);
-        int t = TapasBatchProcess.analyseChannelFrameName(parameters.get(FRAME), info);
+        int c = TapasBatchUtils.analyseChannelFrameName(parameters.get(CHANNEL), info);
+        int t = TapasBatchUtils.analyseChannelFrameName(parameters.get(FRAME), info);
         // binning
         int binXY = Integer.parseInt(getParameter(BINXY));
         int binZ = Integer.parseInt(getParameter(BINZ));

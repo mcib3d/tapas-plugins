@@ -34,9 +34,6 @@ public class LabellerProcess implements TapasProcessing {
             case UNIT:
                 parameters.put(id, value);
                 return true;
-
-
-
         }
         return false;
     }

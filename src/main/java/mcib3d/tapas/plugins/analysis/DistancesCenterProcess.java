@@ -7,7 +7,7 @@ import mcib3d.geom.Objects3DPopulation;
 import mcib3d.image3d.ImageHandler;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -57,7 +57,7 @@ public class DistancesCenterProcess implements TapasProcessing {
         ImageHandler imageHandler = ImageHandler.wrap(input);
         Objects3DPopulation population = new Objects3DPopulation(imageHandler);
         // get parameter
-        String fileName = TapasBatchProcess.analyseDirName(getParameter(DIR)) + TapasBatchProcess.analyseFileName(getParameter(FILE), info);
+        String fileName = TapasBatchUtils.analyseDirName(getParameter(DIR)) + TapasBatchUtils.analyseFileName(getParameter(FILE), info);
         // create file a
         String delimiter = ",";
         BufferedWriter buf;

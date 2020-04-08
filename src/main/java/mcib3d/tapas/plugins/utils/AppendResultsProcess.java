@@ -6,7 +6,7 @@ import ij.ImagePlus;
 import ij.macro.Variable;
 import ij.measure.ResultsTable;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.tapas.core.ImageInfo;
 
 import java.io.File;
@@ -45,11 +45,11 @@ public class AppendResultsProcess implements TapasProcessing {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        String dir1 = TapasBatchProcess.analyseDirName(parameters.get(DIR));
-        String name1 = TapasBatchProcess.analyseFileName(parameters.get(FILE1), info);
+        String dir1 = TapasBatchUtils.analyseDirName(parameters.get(DIR));
+        String name1 = TapasBatchUtils.analyseFileName(parameters.get(FILE1), info);
         File file1 = new File(dir1 + name1);
-        String dir2 = TapasBatchProcess.analyseDirName(parameters.get(DIR));
-        String name2 = TapasBatchProcess.analyseFileName(parameters.get(FILE2), info);
+        String dir2 = TapasBatchUtils.analyseDirName(parameters.get(DIR));
+        String name2 = TapasBatchUtils.analyseFileName(parameters.get(FILE2), info);
         File file2 = new File(dir2 + name2);
         // no file2 do nothing
         if (!file2.exists()) {

@@ -9,6 +9,7 @@ import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.ImageData;
 
 import java.util.HashMap;
@@ -60,9 +61,9 @@ public class LoadOmeroProcess implements TapasProcessing {
         String name = getParameter(NAME);
         String project = getParameter(PROJECT);
         String dataset = getParameter(DATASET);
-        String project2 = TapasBatchProcess.analyseFileName(project, info);
-        String dataset2 = TapasBatchProcess.analyseFileName(dataset, info);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
+        String project2 = TapasBatchUtils.analyseFileName(project, info);
+        String dataset2 = TapasBatchUtils.analyseFileName(dataset, info);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
         ImageHandler output = null;
         ImagePlus stack = null;
         try {

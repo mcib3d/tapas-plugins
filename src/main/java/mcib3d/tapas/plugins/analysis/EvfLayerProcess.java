@@ -6,7 +6,7 @@ import ij.gui.Plot;
 import ij.io.FileSaver;
 import mcib3d.geom.Point3D;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.image3d.ImageHandler;
 
@@ -61,8 +61,8 @@ public class EvfLayerProcess implements TapasProcessing {
         boolean rand = getParameter(RANDOM).trim().compareToIgnoreCase("yes") == 0;
         String name = getParameter(FILE_EVF);
         String dir = getParameter(DIR_EVF);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         IJ.log("Opening EVF image " + dir2 + name2);
         ImagePlus plus = IJ.openImage(dir2 + name2);
         if (plus == null) {
@@ -70,8 +70,8 @@ public class EvfLayerProcess implements TapasProcessing {
             return null;
         }
         IJ.log("Computing EVF layers");
-        name2 = TapasBatchProcess.analyseFileName(getParameter(FILE_RES), info);
-        dir2 = TapasBatchProcess.analyseDirName(getParameter(DIR_RES));
+        name2 = TapasBatchUtils.analyseFileName(getParameter(FILE_RES), info);
+        dir2 = TapasBatchUtils.analyseDirName(getParameter(DIR_RES));
         //IJ.log("PLOT "+plot.getImagePlus()+" "+plot.getResultsTable());
         Plot[] plots = computeEVFLayer(ImageHandler.wrap(plus), ImageHandler.wrap(input), Integer.parseInt(getParameter(NB_LAYERS)), rand);
         FileSaver saver = new FileSaver(plots[0].getImagePlus());

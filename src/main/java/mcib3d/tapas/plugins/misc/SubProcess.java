@@ -2,9 +2,11 @@ package mcib3d.tapas.plugins.misc;
 
 import ij.IJ;
 import ij.ImagePlus;
+import ij.process.ByteProcessor;
+import ij.process.ImageProcessor;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.TapasProcessingAbstract;
+import mcib3d.tapas.core.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,27 +38,29 @@ public class SubProcess implements TapasProcessing {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        // TODO move to a static class with all the information
-        HashMap<String, String> map = TapasBatchProcess.readPluginsFile(IJ.getDirectory("imagej") + File.separator + "tapas.txt", false);
+        // get information
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
-        ArrayList<TapasProcessing> tapasProcessings = TapasBatchProcess.readProcessings(dir2 + name2, map);
-        ImagePlus img = input.duplicate();
-        for (TapasProcessing tapasProcessing : tapasProcessings) {
-            IJ.log("  * " + tapasProcessing.getName());
-            tapasProcessing.setCurrentImage(info);
-            img = tapasProcessing.execute(img);
-            if (img == null) return null;
-        }
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
 
-        return img;
+        File tapasFile = new File(IJ.getDirectory("imagej") + File.separator + "tapas.txt");
+        String processFile=dir2+name2;
+
+        // get processor
+        TapasProcessorAbstract processor = TapasBatchProcess.getProcessor(processFile);
+        IJ.log("Processing with "+processor.getNameProcessor());
+        processor.init(TapasBatchProcess.readProcessings(processFile,TapasBatchProcess.readPluginsFile(tapasFile.getAbsolutePath(),false)));
+        processor.processOneImage(info);
+
+        ImageProcessor ip = new ByteProcessor(100, 100);
+        ip.noise(50);
+        return new ImagePlus("dummy", ip);
     }
 
     @Override
     public String getName() {
-        return "Execute sub-processes";
+        return "Execute sub-process";
     }
 
     @Override

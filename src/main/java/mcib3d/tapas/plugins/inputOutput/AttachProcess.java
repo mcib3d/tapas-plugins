@@ -6,6 +6,7 @@ import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.ImageInfo;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,12 +58,12 @@ public class AttachProcess implements TapasProcessing {
         // file
         String name = getParameter(FILE);
         String dir = getParameter(DIR);
-        String nameF = TapasBatchProcess.analyseFileName(name, info);
-        String dirF = TapasBatchProcess.analyseDirName(dir);
+        String nameF = TapasBatchUtils.analyseFileName(name, info);
+        String dirF = TapasBatchUtils.analyseDirName(dir);
         // core
-        String nameO = TapasBatchProcess.analyseFileName(getParameter(NAME), info);
-        String project = TapasBatchProcess.analyseFileName(getParameter(PROJECT), info);
-        String dataset = TapasBatchProcess.analyseFileName(getParameter(DATASET), info);
+        String nameO = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
+        String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
 
         IJ.log("Attaching " + dirF + nameF);
         File file = new File(dirF + nameF);

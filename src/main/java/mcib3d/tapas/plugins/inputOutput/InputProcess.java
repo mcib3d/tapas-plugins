@@ -3,10 +3,7 @@ package mcib3d.tapas.plugins.inputOutput;
 import ij.IJ;
 import ij.ImagePlus;
 import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.BioformatsReader;
-import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
-import mcib3d.tapas.core.OmeroConnect;
+import mcib3d.tapas.core.*;
 import mcib3d.image3d.ImageHandler;
 import omero.gateway.model.ImageData;
 
@@ -61,43 +58,18 @@ public class InputProcess implements TapasProcessing {
         String name = getParameter(NAME);
         String project = getParameter(PROJECT);
         String dataset = getParameter(DATASET);
-        String project2 = TapasBatchProcess.analyseFileName(project, info);
-        String dataset2 = TapasBatchProcess.analyseFileName(dataset, info);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
+        String project2 = TapasBatchUtils.analyseFileName(project, info);
+        String dataset2 = TapasBatchUtils.analyseFileName(dataset, info);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
         ImageHandler output = null;
 
         // core input
-        int c = TapasBatchProcess.analyseChannelFrameName(parameters.get(CHANNEL), info);
-        int t = TapasBatchProcess.analyseChannelFrameName(parameters.get(FRAME), info);
-        if (info.isOmero()) {
-            try {
-                OmeroConnect connect = new OmeroConnect();
-                connect.connect();
-                ImageData imageData = connect.findOneImage(project2, dataset2, name2, true);
-                if (imageData == null) {
-                    IJ.log("Cannot find " + project2 + " / " + dataset2 + " / " + name2);
-                    return null;
-                }
+        int c = TapasBatchUtils.analyseChannelFrameName(parameters.get(CHANNEL), info);
+        int t = TapasBatchUtils.analyseChannelFrameName(parameters.get(FRAME), info);
 
-                IJ.log("Loading from OMERO : " + imageData.getName() + " c-" + c + " t-" + t);
-                output = connect.getImage(imageData, t, c);
-                connect.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return output.getImagePlus();
-        } else { // use bioformats
-            ImageInfo info2 = new ImageInfo(info.getRootDir(), project2, dataset2, name2, c, t);
-            IJ.log("Loading : " + info2.getFilePath());
-            ImagePlus plus = BioformatsReader.OpenImagePlus(info2.getFilePath(), info2.getC() - 1, info2.getT() - 1);
-            if (plus == null) {
-                IJ.log("Could not load " + info2.getFilePath());
-                return null;
-            }
+       ImagePlus plus = TapasBatchProcess.inputImage(info,project2,dataset2,name2,c,t);
 
-            plus.setTitle(name2);
-            return plus;
-        }
+       return plus;
     }
 
     @Override

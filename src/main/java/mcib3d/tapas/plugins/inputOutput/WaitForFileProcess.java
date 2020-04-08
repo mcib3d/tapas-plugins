@@ -5,6 +5,7 @@ import ij.ImagePlus;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.ImageInfo;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -45,8 +46,8 @@ public class WaitForFileProcess implements TapasProcessing {
         String dir = parameters.get(DIR);
         int time = Integer.parseInt(parameters.get(TIME));
         // check names
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         File file = new File(dir2 + name2);
         if (!file.exists()) IJ.log("Waiting for file " + name2 + " in directory " + dir2);
         try {

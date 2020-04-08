@@ -6,7 +6,7 @@ import ij.ImageStack;
 import ij.util.StringSorter;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -47,8 +47,8 @@ public class SequenceProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         String name = parameters.get(NAME);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         // Directory list
         String[] files;
         File dirf = new File(dir);

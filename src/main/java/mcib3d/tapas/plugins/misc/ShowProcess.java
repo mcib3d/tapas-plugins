@@ -4,7 +4,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.util.HashMap;
 
@@ -34,7 +34,7 @@ public class ShowProcess implements TapasProcessing {
         if (IJ.macroRunning()) return input.duplicate();
         // show image :)
         String title;
-        title = TapasBatchProcess.analyseFileName(getParameter(TITLE), info);
+        title = TapasBatchUtils.analyseFileName(getParameter(TITLE), info);
         input.setTitle(title);
         input.show();
 

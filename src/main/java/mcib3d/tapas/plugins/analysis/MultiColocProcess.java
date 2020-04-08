@@ -9,6 +9,7 @@ import mcib3d.image3d.ImageHandler;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -69,8 +70,8 @@ public class MultiColocProcess implements TapasProcessing {
         IJ.log("Saving results");
         String name = parameters.get(FILE);
         String dir = parameters.get(DIR);
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         try {
             resultsTable.saveAs(dir2 + name2);
         } catch (IOException e) {

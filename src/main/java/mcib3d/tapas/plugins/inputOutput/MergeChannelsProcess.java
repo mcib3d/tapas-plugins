@@ -9,6 +9,7 @@ import ij.process.ImageConverter;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class MergeChannelsProcess implements TapasProcessing {
     public ImagePlus execute(ImagePlus input) {
         // directory
         String dir = parameters.get(DIR);
-        String dir2 = TapasBatchProcess.analyseDirName(dir);
+        String dir2 = TapasBatchUtils.analyseDirName(dir);
         // list of files
         String[] files = parameters.get(LIST).split(",");
         // rgb or composite
@@ -62,7 +63,7 @@ public class MergeChannelsProcess implements TapasProcessing {
         ArrayList<ImagePlus> pluses = new ArrayList<>();
         for (int i = 0; i < files.length; i++) {
             String name = files[i];
-            String name2 = TapasBatchProcess.analyseFileName(name, info);
+            String name2 = TapasBatchUtils.analyseFileName(name, info);
             IJ.log("Opening " + dir2 + name2);
             ImagePlus tmp = IJ.openImage(dir2 + name2);
             if (tmp == null) continue;
@@ -81,7 +82,7 @@ public class MergeChannelsProcess implements TapasProcessing {
     private ImagePlus composite(String[] files, String dir2) {
         // load first image
         String name = files[0];
-        String name2 = TapasBatchProcess.analyseFileName(name, info);
+        String name2 = TapasBatchUtils.analyseFileName(name, info);
         IJ.log("Opening " + dir2 + name2);
         ImagePlus plus = IJ.openImage(dir2 + name2);
         int slices = plus.getNSlices();
@@ -90,7 +91,7 @@ public class MergeChannelsProcess implements TapasProcessing {
         int channels = 1;
         for (int i = 1; i < files.length; i++) {
             name = files[i];
-            name2 = TapasBatchProcess.analyseFileName(name, info);
+            name2 = TapasBatchUtils.analyseFileName(name, info);
             IJ.log("Opening " + dir2 + name2);
             ImagePlus tmp = IJ.openImage(dir2 + name2);
             if (tmp == null) continue;
