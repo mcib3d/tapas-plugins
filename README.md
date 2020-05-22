@@ -19,7 +19,7 @@ If you want to include this library as part as your maven project, use this depe
 		
 		<artifactId>tapas-plugins</artifactId>
 		
-		<version>0.5</version>
+		<version>0.6.2</version>
 		
 `</dependency>`
 
