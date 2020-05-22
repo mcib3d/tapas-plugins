@@ -9,7 +9,6 @@ import ij.plugin.filter.ParticleAnalyzer;
 import mcib3d.tapas.TapasProcessing;
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchUtils;
-import ome.tools.hibernate.SqlArray;
 
 import java.io.IOException;
 import java.util.HashMap;

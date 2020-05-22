@@ -1,13 +1,12 @@
 package mcib3d.tapas.plugins.inputOutput;
 
-import ij.IJ;
 import ij.ImagePlus;
-import mcib3d.tapas.TapasProcessing;
-import mcib3d.tapas.core.*;
 import mcib3d.image3d.ImageHandler;
-import omero.gateway.model.ImageData;
+import mcib3d.tapas.TapasProcessing;
+import mcib3d.tapas.core.ImageInfo;
+import mcib3d.tapas.core.TapasBatchProcess;
+import mcib3d.tapas.core.TapasBatchUtils;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class InputProcess implements TapasProcessing {
