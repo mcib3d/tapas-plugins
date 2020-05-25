@@ -88,7 +88,7 @@ public class QuantificationProcess implements TapasProcessing {
         String dir = parameters.get(DIR);
         String name2 = TapasBatchUtils.analyseFileName(name, info);
         String dir2 = TapasBatchUtils.analyseDirName(dir);
-        if (debug) IJ.log("saving results to " + dir2 + " " + name2);
+        if (debug) IJ.log("Saving results to " + dir2 + " " + name2);
         try {
             resultsTable.saveAs(dir2 + name2);
         } catch (IOException e) {

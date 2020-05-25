@@ -9,6 +9,8 @@ import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 public class AttachListProcess implements TapasProcessing {
@@ -56,29 +58,66 @@ public class AttachListProcess implements TapasProcessing {
         String dir = getParameter(DIR);
         String dirF = TapasBatchUtils.analyseDirName(dir);
         // core
-        String nameO = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String name = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
         String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
         String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
         try {
             // get list of files
             String[] files = parameters.get(LIST).split(",");
-            OmeroConnect connect = new OmeroConnect();
-            connect.setLog(false);
-            connect.connect();
             for (String attachFile : files) {
                 String nameF = TapasBatchUtils.analyseFileName(attachFile, info);
-                IJ.log("Attaching " + dirF + nameF+" to OMERO");
                 File file = new File(dirF + nameF);
-                if (!file.exists()) IJ.log(file.getAbsolutePath() + " does not exists");
-                connect.addFileAnnotation(connect.findOneImage(project, dataset, nameO, true), new File(dirF + nameF));
+                IJ.log("Attaching " + dirF + nameF);
+                if (!file.exists()) {
+                    IJ.log(file.getAbsolutePath() + " does not exists. Ignoring.");
+                    continue;
+                }
+                // check if omero or files34pp000002
+                if (info.isFile()) { // if file copy in same dataset directory
+                    boolean ok = attachFiles(file, info.getRootDir() + project + File.separator + dataset + File.separator + nameF);
+                } else {
+                    boolean ok = attachOMERO(file, project, dataset, name);
+                }
             }
-            connect.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return input.duplicate();
     }
+
+    private boolean attachFiles(File file, String path) {
+        try {
+            IJ.log("Attaching to FILES : "+path);
+            File file2 = new File(path);
+            // delete if exist
+            if (file2.exists()) {
+                IJ.log("File " + file2.getPath() + " exists. Overwriting");
+                file2.delete();
+            }
+            Files.copy(file.toPath(), file2.toPath());
+        } catch (IOException e) {
+            IJ.log("Could not copy " + file.getPath() + " to " + path);
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean attachOMERO(File file, String project, String dataset, String name) {
+        try {
+            IJ.log("Attaching to OMERO");
+            OmeroConnect connect = new OmeroConnect();
+            connect.setLog(false);
+            connect.connect();
+            connect.addFileAnnotation(connect.findOneImage(project, dataset, name, true), file);
+            connect.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
 
     @Override
