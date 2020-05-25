@@ -47,4 +47,4 @@ and
   IMC'19, Sydney, Australia.
   
   Documentations are available on the Imagej wiki website : 
-  http://imagejdocu.tudor.lu/doku.php?id=plugin:utilities:tapas_:integrated_framework_for_automated_processing_and_analysis:start
+  https://imagej.net/TAPAS
