@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>mcib3d</groupId>
     <artifactId>tapas-plugins</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <packaging>jar</packaging>
     <build>
         <plugins>
@@ -24,7 +24,7 @@
        <dependency>
             <groupId>com.github.mcib3d</groupId>
             <artifactId>tapas-core</artifactId>
-            <version>0.6.2</version>
+            <version>f0ce076cee</version>
         </dependency>
         <dependency>
             <groupId>net.imagej</groupId>
