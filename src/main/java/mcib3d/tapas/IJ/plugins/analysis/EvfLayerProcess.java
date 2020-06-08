@@ -4,11 +4,10 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.Plot;
 import ij.io.FileSaver;
-import mcib3d.geom.Point3D;
-import mcib3d.tapas.IJ.TapasProcessingIJ;
-import mcib3d.tapas.core.TapasBatchUtils;
-import mcib3d.tapas.core.ImageInfo;
 import mcib3d.image3d.ImageHandler;
+import mcib3d.tapas.IJ.TapasProcessingIJ;
+import mcib3d.tapas.core.ImageInfo;
+import mcib3d.tapas.core.TapasBatchUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,14 +19,16 @@ public class EvfLayerProcess implements TapasProcessingIJ {
     public static final String DIR_RES = "dir";
     public static final String FILE_RES = "file";
     public static final String RANDOM = "random";
+    public static final String SAVEPNG = "savePlot";
 
     ImageInfo info;
     HashMap<String, String> parameters;
 
     public EvfLayerProcess() {
         parameters = new HashMap<>();
-        setParameter(NB_LAYERS,"100");
+        setParameter(NB_LAYERS, "100");
         setParameter(RANDOM, "no");
+        setParameter(SAVEPNG, "no");
     }
 
     @Override
@@ -51,6 +52,9 @@ public class EvfLayerProcess implements TapasProcessingIJ {
             case RANDOM:
                 parameters.put(id, value);
                 return true;
+            case SAVEPNG:
+                parameters.put(id, value);
+                return true;
         }
         return false;
     }
@@ -63,6 +67,7 @@ public class EvfLayerProcess implements TapasProcessingIJ {
         String dir = getParameter(DIR_EVF);
         String name2 = TapasBatchUtils.analyseFileName(name, info);
         String dir2 = TapasBatchUtils.analyseDirName(dir);
+        boolean savePng = getParameter(SAVEPNG).equalsIgnoreCase("yes");
         IJ.log("Opening EVF image " + dir2 + name2);
         ImagePlus plus = IJ.openImage(dir2 + name2);
         if (plus == null) {
@@ -74,19 +79,51 @@ public class EvfLayerProcess implements TapasProcessingIJ {
         dir2 = TapasBatchUtils.analyseDirName(getParameter(DIR_RES));
         //IJ.log("PLOT "+plot.getImagePlus()+" "+plot.getResultsTable());
         Plot[] plots = computeEVFLayer(ImageHandler.wrap(plus), ImageHandler.wrap(input), Integer.parseInt(getParameter(NB_LAYERS)), rand);
-        FileSaver saver = new FileSaver(plots[0].getImagePlus());
-        saver.saveAsPng(dir2 + name2 + ".png");
-        saver = new FileSaver(plots[1].getImagePlus());
-        saver.saveAsPng(dir2 + name2 + "-all.png");
+        if (savePng) {
+            String namePng;
+            String namePngAll;
+            if (name2.contains(".csv")) {
+                namePng = name2.replace(".csv", "-plotEVF.png");
+                namePngAll = name2.replace(".csv", "-plotEVFall.png");
+            } else {
+                namePng = name2.concat("-plotEVF.png");
+                namePngAll = name2.concat("-plotEVFall.png");
+            }
+            FileSaver saver = new FileSaver(plots[0].getImagePlus());
+            saver.saveAsPng(dir2 + namePng);
+            saver = new FileSaver(plots[1].getImagePlus());
+            saver.saveAsPng(dir2 + namePngAll);
+        }
         if (rand) {
-            saver = new FileSaver(plots[2].getImagePlus());
-            saver.saveAsPng(dir2 + name2 + "-random.png");
+            String nameRand;
+            if (name2.contains(".csv")) {
+                nameRand = name2.replace(".csv", "-plotEVFrandom.png");
+            } else {
+                nameRand = name2.concat("-plotEVFrandom.png");
+            }
+            if (savePng) {
+                FileSaver saver = new FileSaver(plots[2].getImagePlus());
+                saver.saveAsPng(dir2 + nameRand);
+            }
         }
         try {
-            plots[0].getResultsTable().saveAs(dir2 + name2 + ".csv");
-            plots[1].getResultsTable().saveAs(dir2 + name2 + "-all.csv");
-            if (rand)
-                plots[2].getResultsTable().saveAs(dir2 + name2 + "-random.csv");
+            String nameCSV;
+            String nameCSVall;
+            String nameRand;
+            if (!name2.contains(".csv")) {
+                nameCSV = name2.concat("-EVFlayers.csv");
+                nameCSVall = name2.concat("-EVFlayersAll.csv");
+                nameRand = name2.concat("-EVFlayersRandom.csv");
+            } else {
+                nameCSV = name2;
+                nameCSVall = name2.replace(".csv", "-all.csv");
+                nameRand = name2.replace(".csv", "-random.csv");
+            }
+            plots[0].getResultsTable().saveAs(dir2 + nameCSV);
+            plots[1].getResultsTable().saveAs(dir2 + nameCSVall);
+            if (rand) {
+                plots[2].getResultsTable().saveAs(dir2 + nameRand);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,11 +183,8 @@ public class EvfLayerProcess implements TapasProcessingIJ {
         float[] count = new float[nbBin];
         float[] idx = new float[nbBin];
 
-        int xmin = 0;
         int xmax = evf.sizeX - 1;
-        int ymin = 0;
         int ymax = evf.sizeY;
-        int zmin = 0;
         int zmax = evf.sizeZ - 1;
 
         for (int s = 0; s < nbSpots; s++) {
@@ -190,7 +224,7 @@ public class EvfLayerProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR_EVF, FILE_EVF, NB_LAYERS, DIR_RES, FILE_RES, RANDOM};
+        return new String[]{DIR_EVF, FILE_EVF, NB_LAYERS, DIR_RES, FILE_RES, SAVEPNG, RANDOM};
     }
 
     public String getParameter(String id) {

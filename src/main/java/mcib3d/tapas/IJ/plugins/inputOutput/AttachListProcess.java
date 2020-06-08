@@ -99,8 +99,15 @@ public class AttachListProcess implements TapasProcessingIJ {
     private boolean attachFiles(ImageInfo info, File file, String project, String dataset) {
         String name = file.getName();
         String path = info.getRootDir() + project + File.separator + dataset + File.separator + name;
+        // new 0.6.3, put in a folder "attachments"
+        File attachFolder = new File(info.getRootDir() + project + File.separator + dataset + File.separator + "attachments" + File.separator);
+        if (!attachFolder.exists()) {
+            IJ.log("Creating folder " + attachFolder + " to store attachments");
+            attachFolder.mkdir();
+        }
+        path = attachFolder.getPath() + File.separator + name;
         try {
-            IJ.log("Attaching to FILE");
+            IJ.log("Attaching to FILES");
             File file2 = new File(path);
             // delete if exist
             if (file2.exists()) {
