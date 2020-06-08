@@ -4,6 +4,7 @@ The tapas-pluginslibrary will store the  plugins (modules) of TAPAS, a system fo
 Please follow these instructions to download and compile the source code : 
 
 `git clone https://github.com/mcib3d/tapas-plugins.git`
+
 `mvn package`
 
 Altetnatively you should be able to open the project in Netbeans or Eclipse. 
