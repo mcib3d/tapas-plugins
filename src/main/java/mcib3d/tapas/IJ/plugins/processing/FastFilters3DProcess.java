@@ -88,11 +88,13 @@ public class FastFilters3DProcess implements TapasProcessingIJ {
         return parameters.get(id);
     }
 
+    private float getParameterFloat(String id) {
+        return Float.parseFloat(getParameter(id));
+    }
+
     @Override
     public void setCurrentImage(ImageInfo currentImage) {
     }
 
-    private float getParameterFloat(String id) {
-        return Float.parseFloat(getParameter(id));
-    }
+
 }
