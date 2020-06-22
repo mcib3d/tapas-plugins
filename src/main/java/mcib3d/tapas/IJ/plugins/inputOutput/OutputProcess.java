@@ -1,22 +1,18 @@
 package mcib3d.tapas.IJ.plugins.inputOutput;
 
-import ij.IJ;
 import ij.ImagePlus;
-import ij.io.FileSaver;
 import mcib3d.tapas.IJ.TapasProcessingIJ;
 
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.TapasBatchProcess;
-import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchUtils;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class OutputProcess implements TapasProcessingIJ {
     public static final String PROJECT = "project";
     public static final String DATASET = "dataset";
-    public static final String NAME = "name";
+    public static final String IMAGE = "image";
 
     HashMap<String, String> parameters;
     ImageInfo info;
@@ -36,7 +32,8 @@ public class OutputProcess implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
         }
@@ -46,7 +43,7 @@ public class OutputProcess implements TapasProcessingIJ {
     @Override
     public ImagePlus execute(ImagePlus input) {
         // update final name
-        String name = getParameter(NAME);
+        String name = getParameter(IMAGE);
         String name2 = TapasBatchUtils.analyseFileName(name, info);
         String project = getParameter(PROJECT);
         String project2 = TapasBatchUtils.analyseFileName(project, info);
@@ -66,7 +63,7 @@ public class OutputProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{PROJECT, DATASET, NAME};
+        return new String[]{PROJECT, DATASET, IMAGE};
     }
 
     @Override

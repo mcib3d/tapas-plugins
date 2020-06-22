@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class InputProcessBinning implements TapasProcessingIJ {
     private static final String PROJECT = "project";
     private static final String DATASET = "dataset";
-    private static final String NAME = "name";
+    private static final String IMAGE = "image";
     private static final String CHANNEL = "channel";
     private static final String FRAME = "frame";
     // binning
@@ -28,7 +28,7 @@ public class InputProcessBinning implements TapasProcessingIJ {
         parameters = new HashMap<>();
         setParameter(PROJECT, "?project?");
         setParameter(DATASET, "?dataset?");
-        setParameter(NAME, "?name?");
+        setParameter(IMAGE, "?image?");
         setParameter(CHANNEL, "?channel?");
         setParameter(FRAME, "?frame?");
         setParameter(BINXY, "1");
@@ -44,7 +44,8 @@ public class InputProcessBinning implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
             case CHANNEL:
@@ -65,7 +66,7 @@ public class InputProcessBinning implements TapasProcessingIJ {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        String name = getParameter(NAME);
+        String name = getParameter(IMAGE);
         String project = getParameter(PROJECT);
         String dataset = getParameter(DATASET);
         String project2 = TapasBatchUtils.analyseFileName(project, info);
@@ -104,7 +105,7 @@ public class InputProcessBinning implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{PROJECT, DATASET, NAME, FRAME, CHANNEL, BINXY, BINZ};
+        return new String[]{PROJECT, DATASET, IMAGE, FRAME, CHANNEL, BINXY, BINZ};
     }
 
     @Override

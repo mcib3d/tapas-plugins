@@ -38,6 +38,7 @@ public class EdtEvfProcess implements TapasProcessingIJ {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
+        ImageInt labels = ImageInt.wrap(input);
         IJ.log("Processing EDT");
         boolean inverse = getParameter(INVERSE).equalsIgnoreCase("yes");
         ImageFloat edt = EDT.run(ImageHandler.wrap(input), 0, inverse, 0);
@@ -45,16 +46,18 @@ public class EdtEvfProcess implements TapasProcessingIJ {
         if (getParameter(EVF).equalsIgnoreCase("no")) {
             return edt.getImagePlus();
         } else {
-            IJ.log("Normalising EVF");
-            EDT.normalizeDistanceMap(edt, ImageInt.wrap(input), false);
+            IJ.log("Normalising EVF in each label");
+            //EDT.normalizeDistanceMap(edt, labels, false);
+            // normalize distance map per label
+            ImageHandler evf = EDT.normaliseLabel(labels,edt);
             IJ.log("EVF processed");
-            return edt.getImagePlus();
+            return evf.getImagePlus();
         }
     }
 
     @Override
     public String getName() {
-        return "EDT and EVF";
+        return "EDT and multi-label EVF";
     }
 
     @Override

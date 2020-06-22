@@ -6,7 +6,6 @@ import mcib3d.tapas.IJ.TapasProcessingIJ;
 
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
-import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.FileAnnotationData;
 import omero.gateway.model.ImageData;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 public class readAttachmentProcess implements TapasProcessingIJ {
     private static final String PROJECT = "project";
     private static final String DATASET = "dataset";
-    private static final String NAME = "name";
+    private static final String IMAGE = "image";
     private static final String ATTACH = "attachment";
     private static final String DIR = "dir";
     private static final String FILE = "file";
@@ -32,7 +31,7 @@ public class readAttachmentProcess implements TapasProcessingIJ {
         parameters = new HashMap<>();
         setParameter(PROJECT, "?project?");
         setParameter(DATASET, "?dataset?");
-        setParameter(NAME, "?name?");
+        setParameter(IMAGE, "?image?");
         setParameter(USERS, "-");
     }
 
@@ -45,7 +44,8 @@ public class readAttachmentProcess implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
             case ATTACH:
@@ -68,7 +68,7 @@ public class readAttachmentProcess implements TapasProcessingIJ {
         // get parameters
         String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
         String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
-        String name = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String name = TapasBatchUtils.analyseFileName(getParameter(IMAGE), info);
         String attach = TapasBatchUtils.analyseFileName(getParameter(ATTACH), info);
         String fileName = TapasBatchUtils.analyseFileName(getParameter(FILE), info);
         String dir = TapasBatchUtils.analyseDirName(getParameter(DIR));
@@ -118,7 +118,7 @@ public class readAttachmentProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{PROJECT, DATASET, NAME, ATTACH, DIR, FILE, USERS};
+        return new String[]{PROJECT, DATASET, IMAGE, ATTACH, DIR, FILE, USERS};
     }
 
     @Override

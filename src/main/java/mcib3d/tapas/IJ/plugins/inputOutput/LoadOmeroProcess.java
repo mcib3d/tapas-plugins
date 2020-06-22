@@ -9,7 +9,6 @@ import mcib3d.tapas.IJ.TapasProcessingIJ;
 
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
-import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.ImageData;
 
@@ -18,7 +17,7 @@ import java.util.HashMap;
 public class LoadOmeroProcess implements TapasProcessingIJ {
     private static final String PROJECT = "project";
     private static final String DATASET = "dataset";
-    private static final String NAME = "name";
+    private static final String IMAGE = "image";
     private static final String CHANNELS = "channels";
     private static final String FRAMES = "frames";
     HashMap<String, String> parameters;
@@ -29,7 +28,7 @@ public class LoadOmeroProcess implements TapasProcessingIJ {
         info = new ImageInfo();
         setParameter(PROJECT, "?project?");
         setParameter(DATASET, "?dataset?");
-        setParameter(NAME, "?name?");
+        setParameter(IMAGE, "?image?");
         setParameter(CHANNELS, "1");
         setParameter(FRAMES, "1");
     }
@@ -43,7 +42,8 @@ public class LoadOmeroProcess implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
             case CHANNELS:
@@ -59,7 +59,7 @@ public class LoadOmeroProcess implements TapasProcessingIJ {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        String name = getParameter(NAME);
+        String name = getParameter(IMAGE);
         String project = getParameter(PROJECT);
         String dataset = getParameter(DATASET);
         String project2 = TapasBatchUtils.analyseFileName(project, info);
@@ -122,7 +122,7 @@ public class LoadOmeroProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{PROJECT, DATASET, NAME, CHANNELS, FRAMES};
+        return new String[]{PROJECT, DATASET, IMAGE, CHANNELS, FRAMES};
     }
 
     public String getParameter(String id) {

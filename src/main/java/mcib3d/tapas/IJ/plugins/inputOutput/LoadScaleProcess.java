@@ -7,7 +7,6 @@ import mcib3d.tapas.IJ.TapasProcessingIJ;
 
 import mcib3d.tapas.core.ImageInfo;
 import mcib3d.tapas.core.OmeroConnect;
-import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.TapasBatchUtils;
 import omero.gateway.model.ImageData;
 import java.io.BufferedReader;
@@ -21,7 +20,7 @@ public class LoadScaleProcess implements TapasProcessingIJ {
     private static final String FILE = "file";
     private static final String PROJECT = "project";
     private static final String DATASET = "dataset";
-    private static final String NAME = "name";
+    private static final String IMAGE = "image";
 
 
     HashMap<String, String> parameters;
@@ -32,7 +31,7 @@ public class LoadScaleProcess implements TapasProcessingIJ {
         setParameter(FILE, "scale.txt");
         setParameter(PROJECT, "?project?");
         setParameter(DATASET, "?dataset?");
-        setParameter(NAME, "?name?");
+        setParameter(IMAGE, "?image?");
     }
 
     @Override
@@ -44,7 +43,8 @@ public class LoadScaleProcess implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
             case DIR:
@@ -65,7 +65,7 @@ public class LoadScaleProcess implements TapasProcessingIJ {
         // get the image data
         String project2 = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
         String dataset2 = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
-        String name2 = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String name2 = TapasBatchUtils.analyseFileName(getParameter(IMAGE), info);
         // get calibration
         Calibration calibration = input.getCalibration();
         double sxy = 1;
@@ -121,7 +121,7 @@ public class LoadScaleProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, FILE, PROJECT, DATASET, NAME};
+        return new String[]{DIR, FILE, PROJECT, DATASET, IMAGE};
     }
 
     @Override

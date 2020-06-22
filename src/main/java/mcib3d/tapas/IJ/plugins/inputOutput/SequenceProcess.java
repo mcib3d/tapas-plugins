@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class SequenceProcess implements TapasProcessingIJ {
     private static String[] excludedTypes = {".txt", ".lut", ".roi", ".pty", ".hdr", ".java", ".ijm", ".py", ".js", ".bsh", ".xml"};// from FolderOpener
     private static final String DIR = "dir";
-    private static final String NAME = "filename";
+    private static final String FILENAME = "filename";
     private static final String DIMENSION = "dimension"; // dimension Z or T
 
     HashMap<String, String> parameters;
@@ -23,7 +23,7 @@ public class SequenceProcess implements TapasProcessingIJ {
 
     public SequenceProcess() {
         parameters = new HashMap<>();
-        setParameter(NAME, "*");
+        setParameter(FILENAME, "*");
         setParameter(DIMENSION, "Z");
     }
 
@@ -33,7 +33,7 @@ public class SequenceProcess implements TapasProcessingIJ {
             case DIR:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case FILENAME:
                 parameters.put(id, value);
                 return true;
             case DIMENSION:
@@ -46,7 +46,7 @@ public class SequenceProcess implements TapasProcessingIJ {
 
     @Override
     public ImagePlus execute(ImagePlus input) {
-        String name = parameters.get(NAME);
+        String name = parameters.get(FILENAME);
         String dir = parameters.get(DIR);
         String name2 = TapasBatchUtils.analyseFileName(name, info);
         String dir2 = TapasBatchUtils.analyseDirName(dir);
@@ -128,7 +128,7 @@ public class SequenceProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, NAME, DIMENSION};
+        return new String[]{DIR, FILENAME, DIMENSION};
     }
 
     public String getParameter(String id) {

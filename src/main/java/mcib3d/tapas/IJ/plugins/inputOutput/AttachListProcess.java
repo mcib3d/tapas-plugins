@@ -4,7 +4,6 @@ import ij.IJ;
 import ij.ImagePlus;
 import mcib3d.tapas.IJ.TapasProcessingIJ;
 import mcib3d.tapas.core.ImageInfo;
-import mcib3d.tapas.core.TapasBatchProcess;
 import mcib3d.tapas.core.OmeroConnect;
 import mcib3d.tapas.core.TapasBatchUtils;
 
@@ -18,7 +17,7 @@ public class AttachListProcess implements TapasProcessingIJ {
     private static final String LIST = "list";
     private static final String PROJECT = "project";
     private static final String DATASET = "dataset";
-    private static final String NAME = "name";
+    private static final String IMAGE = "image";
 
     HashMap<String, String> parameters;
     ImageInfo info;
@@ -27,7 +26,7 @@ public class AttachListProcess implements TapasProcessingIJ {
         parameters = new HashMap<>();
         setParameter(PROJECT, "?project?");
         setParameter(DATASET, "?dataset?");
-        setParameter(NAME, "?name?");
+        setParameter(IMAGE, "?image?");
     }
 
     @Override
@@ -45,7 +44,8 @@ public class AttachListProcess implements TapasProcessingIJ {
             case DATASET:
                 parameters.put(id, value);
                 return true;
-            case NAME:
+            case "name": // deprecated
+            case IMAGE:
                 parameters.put(id, value);
                 return true;
         }
@@ -58,7 +58,7 @@ public class AttachListProcess implements TapasProcessingIJ {
         String dir = getParameter(DIR);
         String dirF = TapasBatchUtils.analyseDirName(dir);
         // core
-        String name = TapasBatchUtils.analyseFileName(getParameter(NAME), info);
+        String name = TapasBatchUtils.analyseFileName(getParameter(IMAGE), info);
         String project = TapasBatchUtils.analyseFileName(getParameter(PROJECT), info);
         String dataset = TapasBatchUtils.analyseFileName(getParameter(DATASET), info);
         try {
@@ -145,7 +145,7 @@ public class AttachListProcess implements TapasProcessingIJ {
 
     @Override
     public String[] getParameters() {
-        return new String[]{DIR, LIST, PROJECT, DATASET, NAME};
+        return new String[]{DIR, LIST, PROJECT, DATASET, IMAGE};
     }
 
     public String getParameter(String id) {
