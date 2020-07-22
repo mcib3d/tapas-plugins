@@ -24,7 +24,7 @@
        <dependency>
             <groupId>com.github.mcib3d</groupId>
             <artifactId>tapas-core</artifactId>
-            <version>f0ce076cee</version>
+            <version>0.6.3</version>
         </dependency>
         <dependency>
             <groupId>net.imagej</groupId>
