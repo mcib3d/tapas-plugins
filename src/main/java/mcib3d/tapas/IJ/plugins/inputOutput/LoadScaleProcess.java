@@ -79,8 +79,6 @@ public class LoadScaleProcess implements TapasProcessingIJ {
             sz = Double.parseDouble(data[1]);
             unit = data[2];
             bw.close();
-        } catch (FileNotFoundException e) {
-            IJ.log("Pb with file " + dir + file + " : " + e.getMessage());
         } catch (IOException e) {
             IJ.log("Pb with file " + dir + file + " : " + e.getMessage());
         }
