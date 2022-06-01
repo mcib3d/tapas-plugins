@@ -1,3 +1,6 @@
+## NEW REPOSITORY
+https://framagit.org/mcib3d/tapas-plugins
+
 # tapas-plugins
 The tapas-pluginslibrary will store the  plugins (modules) of TAPAS, a system for automation for processing and analysis with ImageJ and OMERO. It can also work with local files if Omero is not isntalled.
 
